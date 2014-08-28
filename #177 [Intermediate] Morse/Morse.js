@@ -15,6 +15,15 @@ var durations = {
     "/": 300
 };
 
+// for (var x = 0; x < input.length; x++) {
+// 	var c = input.charAt(x);
+// 	if (c == ' ') {
+// 		output += '/';
+// 		continue;
+// 	}
+// 	output += MorseTable[c.toUpperCase()];
+// }
+
 var context = new webkitAudioContext();
 
 window.onload = function() {
