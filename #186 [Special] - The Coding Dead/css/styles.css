@@ -1,0 +1,20 @@
+body {
+}
+
+.spot {
+    height: 35px;
+    width: 35px;
+    background: red;
+    margin: 2px;
+    float: left;
+
+    font-family: 'Arial';
+    font-size: 15px;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+
+.row {
+    clear: left;
+}
