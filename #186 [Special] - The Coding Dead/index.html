@@ -7,5 +7,30 @@
     <div id="game_board"></div>
 
     <script type="text/javascript" src="js/app.js"></script>
+
+    <script>
+        /*
+         * Game Input 
+         * x = How many zombies will spawn
+         * y = How many victims will spawn
+         * z = How many hunters will spawn
+         * t = How many ticks will happen
+         */
+        var input = {
+            x: 20,
+            y: 20,
+            z: 10,
+            t: 50,
+            size: {
+                x: 20,
+                y: 20
+            }
+        };
+        var game = new Game(input);
+        game.init();
+        
+        //game.play();
+    </script>
+
 </body>
 </html>

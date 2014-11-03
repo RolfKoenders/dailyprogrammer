@@ -56,6 +56,7 @@ Board.prototype = {
     }
 };
 
+
 /*
  * Game Input 
  * x = How many zombies will spawn
