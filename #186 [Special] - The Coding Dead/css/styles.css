@@ -18,3 +18,9 @@ body {
 .row {
     clear: left;
 }
+
+/* Mobs */
+.zombie {
+    background: black;
+}
+

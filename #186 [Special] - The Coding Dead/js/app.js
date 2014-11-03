@@ -18,10 +18,22 @@ Game.prototype = {
         this.board.render();
 
         //this.board.getSpot(1, 2);
+        
+        this.spawnMobs();
+    },
+
+    spawnMobs: function() {
+        console.log('Create: ' + this.options.x + ' zombies');
+        for(var i = 0; i < this.options.x; i++) {
+            var randomSpot = this.board.randomSpot(); 
+            var z = new Zombie();
+            z.init(randomSpot.position, randomSpot.$el);
+            this.board.placeOnSpot(z);
+        };
     },
 
     play: function() {
-        
+        // Runloop
     }
 };
 
@@ -34,6 +46,20 @@ function Board(size) {
 };
 
 Board.prototype = {
+    randomSpot: function() {
+        var cords = {
+            x: Math.floor(Math.random() * (this.width - 0)) + 0,
+            y: Math.floor(Math.random() * (this.height - 0)) + 0
+        };
+        if(cords.x === 0 || cords.y === 0) {
+            return this.randomSpot();
+        }
+        var spot = this.getSpot(cords.x, cords.y);
+        return {
+            position: cords,
+            $el: spot
+        };
+    },
     getSpot: function(x, y) {
         var index = (x * this.width) + y;
         var spot = this.spots[index-1];
@@ -60,18 +86,23 @@ Board.prototype = {
             rowCount++;
         };
     },
-    placeOnSpot: function(mob, position) {
-        var index = this.getSpot(position.x, position.y);
-        this.spots[index];
+    placeOnSpot: function(mob) {
+        var index = mob.position;
+        this.spots[index] = mob;
+        mob.render();
     }
 };
 
 
-function Mob(spot) {
+function Mob() {
     this.position = null;
-    this.spot = spot;
+    this.el = null;
 };
 Mob.prototype = {
+    _init: function(position, el) {
+        this.position = position;
+        this.el = el;
+    },
     moveTo: function(position) {
         console.log('moveTo: ', position);
     }
@@ -82,26 +113,19 @@ Mob.extend = function(extendClass) {
 };
 
 
-function Zombie(){
-};
+function Zombie() {};
 Mob.extend(Zombie);
-Zombie.prototype = {
-    move: function() {
-        console.log('[Zombie] - move');
-        // Move to new/random position
-        this.moveTo(3,3);
-    }
-};
 
-
-function Victim() {
+Zombie.prototype.init = function(position, el) {
+    this._init(position, el);
 };
-Victim.prototype = {
+Zombie.prototype.render = function() {
+    console.log('[Zombie] - render');
+    this.el.className += ' zombie';
 };
-
-
-function Hunter(){
-};
-Hunter.prototype = {
+Zombie.prototype.move = function() {
+    console.log('[Zombie] - move');
+    // Move to new/random position
+    //this.moveTo(3,3);
 };
 
