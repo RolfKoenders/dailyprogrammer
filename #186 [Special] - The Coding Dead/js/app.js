@@ -1,4 +1,5 @@
 
+/* Game Class */
 function Game(options) {
     this.options = options;
     this.ticks = options.t
@@ -7,13 +8,20 @@ function Game(options) {
 Game.prototype = {
     init: function() {
         console.log('[Game] - init ', this.options);
+
+        if((this.options.x + this.options.y + this.options.z) > (this.options.size.x * this.options.size.y)) {
+            alert('Wrong input!, cannot handle more mobs than there are spots');
+            window.stop();
+        };
+
         this.board = new Board(this.options.size);
         this.board.render();
 
-        this.board.getSpot(1, 2);
+        //this.board.getSpot(1, 2);
     },
 
-    play: function() {    
+    play: function() {
+        
     }
 };
 
@@ -26,14 +34,12 @@ function Board(size) {
 };
 
 Board.prototype = {
-
     getSpot: function(x, y) {
         var index = (x * this.width) + y;
         var spot = this.spots[index-1];
         console.log('[Board] - getSpot: ' + index + ', ', spot);
         return spot;
     },
-
     render: function() {
         console.log('[Board] - render');
         var container = document.getElementById('game_board');
@@ -53,29 +59,49 @@ Board.prototype = {
             this.spots[(i-1)] = div;
             rowCount++;
         };
+    },
+    placeOnSpot: function(mob, position) {
+        var index = this.getSpot(position.x, position.y);
+        this.spots[index];
     }
 };
 
 
-/*
- * Game Input 
- * x = How many zombies will spawn
- * y = How many victims will spawn
- * z = How many hunters will spawn
- * t = How many ticks will happen
- */
-var input = {
-    x: 20,
-    y: 20,
-    z: 10,
-    t: 50,
-    size: {
-        x: 20,
-        y: 20
+function Mob(spot) {
+    this.position = null;
+    this.spot = spot;
+};
+Mob.prototype = {
+    moveTo: function(position) {
+        console.log('moveTo: ', position);
     }
 };
-var game = new Game(input);
-game.init();
+Mob.extend = function(extendClass) {
+    extendClass.prototype = new Mob();
+    extendClass.prototype.constructor = extendClass;
+};
 
-//game.play();
+
+function Zombie(){
+};
+Mob.extend(Zombie);
+Zombie.prototype = {
+    move: function() {
+        console.log('[Zombie] - move');
+        // Move to new/random position
+        this.moveTo(3,3);
+    }
+};
+
+
+function Victim() {
+};
+Victim.prototype = {
+};
+
+
+function Hunter(){
+};
+Hunter.prototype = {
+};
 
