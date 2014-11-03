@@ -45,8 +45,22 @@ Game.prototype = {
         };
     },
 
+    tick: function() {
+        console.log('[Game] - Tick');
+    },
+
     play: function() {
-        // Runloop
+        console.log('[Game] - Play: ' + this.ticks + ' ticks');
+        var _this = this;
+        var tickCounter = 0;
+        setInterval(function() {
+            if(tickCounter === this.ticks) {
+                console.log('[Game] - Finished');
+                alert('Game is finished');
+            }
+            _this.tick();
+            tickCounter++;
+        }, 2000);
     }
 };
 
