@@ -52,15 +52,19 @@ Game.prototype = {
     play: function() {
         console.log('[Game] - Play: ' + this.ticks + ' ticks');
         var _this = this;
+
         var tickCounter = 0;
-        setInterval(function() {
-            if(tickCounter === this.ticks) {
+        var tickInterval = setInterval(ticker, 2000); 
+        function ticker() {
+            if(tickCounter === _this.ticks) {
                 console.log('[Game] - Finished');
                 alert('Game is finished');
+                clearInterval(tickInterval);
+                return;
             }
             _this.tick();
             tickCounter++;
-        }, 2000);
+        }
     }
 };
 
