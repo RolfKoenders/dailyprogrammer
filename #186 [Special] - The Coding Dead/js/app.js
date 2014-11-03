@@ -16,9 +16,6 @@ Game.prototype = {
 
         this.board = new Board(this.options.size);
         this.board.render();
-
-        //this.board.getSpot(1, 2);
-        
         this.spawnMobs();
     },
 
@@ -26,7 +23,23 @@ Game.prototype = {
         console.log('Create: ' + this.options.x + ' zombies');
         for(var i = 0; i < this.options.x; i++) {
             var randomSpot = this.board.randomSpot(); 
-            var z = new Zombie();
+            var x = new Zombie();
+            x.init(randomSpot.position, randomSpot.$el);
+            this.board.placeOnSpot(x);
+        };
+
+        console.log('Create: ' + this.options.y + ' victims');
+        for(var i = 0; i < this.options.y; i++) {
+            var randomSpot = this.board.randomSpot();
+            var y = new Victim();
+            y.init(randomSpot.position, randomSpot.$el);
+            this.board.placeOnSpot(y);
+        };
+
+        console.log('Create: ' + this.options.z + ' hunters');
+        for(var i = 0; i < this.options.z; i++) {
+            var randomSpot = this.board.randomSpot();
+            var z = new Hunter();
             z.init(randomSpot.position, randomSpot.$el);
             this.board.placeOnSpot(z);
         };
@@ -129,3 +142,32 @@ Zombie.prototype.move = function() {
     //this.moveTo(3,3);
 };
 
+
+function Victim() {};
+Mob.extend(Victim);
+
+Victim.prototype.init = function(position, el) {
+    this._init(position, el);
+};
+Victim.prototype.render = function() {
+    console.log('[Victim] - render');
+    this.el.className += ' victim';
+};
+Victim.prototype.move = function() {
+    console.log('[Victim] - move');
+};
+
+
+function Hunter() {};
+Mob.extend(Hunter);
+
+Hunter.prototype.init = function(position, el) {
+    this._init(position, el);
+};
+Hunter.prototype.render = function() {
+    console.log('[Hunter] - render');
+    this.el.className += ' hunter';
+};
+Hunter.prototype.move = function() {
+    console.log('[Hunter - move');
+};

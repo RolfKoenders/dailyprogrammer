@@ -24,3 +24,10 @@ body {
     background: black;
 }
 
+.victim {
+    background: blue;
+}
+
+.hunter {
+    background: green;
+}
