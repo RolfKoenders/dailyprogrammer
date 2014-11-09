@@ -1,11 +1,19 @@
 
-/* Game Class */
+/* 
+ * Game Class
+ * constructor
+ */
 function Game(options) {
+    this.board = null;
+    this.mobs = [];
     this.options = options;
-    this.ticks = options.t
+    this.ticks = options.t;
 };
 
 Game.prototype = {
+    /*
+     *  Game init function
+     */
     init: function() {
         console.log('[Game] - init ', this.options);
 
@@ -19,13 +27,16 @@ Game.prototype = {
         this.spawnMobs();
     },
 
+    /*
+     *  Function to spawn some mobs
+     */
     spawnMobs: function() {
         console.log('Create: ' + this.options.x + ' zombies');
         for(var i = 0; i < this.options.x; i++) {
             var randomSpot = this.board.randomSpot(); 
             var x = new Zombie();
             x.init(randomSpot.position, randomSpot.$el);
-            this.board.placeOnSpot(x);
+            this.addMobToGame(x);
         };
 
         console.log('Create: ' + this.options.y + ' victims');
@@ -33,7 +44,7 @@ Game.prototype = {
             var randomSpot = this.board.randomSpot();
             var y = new Victim();
             y.init(randomSpot.position, randomSpot.$el);
-            this.board.placeOnSpot(y);
+            this.addMobToGame(y);
         };
 
         console.log('Create: ' + this.options.z + ' hunters');
@@ -41,14 +52,33 @@ Game.prototype = {
             var randomSpot = this.board.randomSpot();
             var z = new Hunter();
             z.init(randomSpot.position, randomSpot.$el);
-            this.board.placeOnSpot(z);
+            this.addMobToGame(z);
         };
     },
 
-    tick: function() {
-        console.log('[Game] - Tick');
+    /*
+     *  Add a mob to the game
+     */
+    addMobToGame: function(mob) {
+        this.board.placeOnSpot(mob);
+        this.mobs.push(mob);
     },
 
+    /*
+     *  Game tick function
+     */
+    tick: function() {
+        console.log('[Game] - Tick');
+        var mobCount = this.mobs.length;
+        for(var i = 0; i < mobCount; i++) {
+            var Mob = this.mobs[i];
+            var move = Mob.movementAction();
+        };
+    },
+
+    /*
+     *  Start the game and start the game loop
+     */
     play: function() {
         console.log('[Game] - Play: ' + this.ticks + ' ticks');
         var _this = this;
@@ -68,7 +98,10 @@ Game.prototype = {
     }
 };
 
-
+/*
+ *  Game board class
+ *  constructor
+ */
 function Board(size) {
     this.height = size.y;
     this.width = size.x;
@@ -77,6 +110,10 @@ function Board(size) {
 };
 
 Board.prototype = {
+    /*
+     *  Return a random spot on the board
+     *  TODO check if spot is already taken
+     */
     randomSpot: function() {
         var cords = {
             x: Math.floor(Math.random() * (this.width - 0)) + 0,
@@ -91,12 +128,20 @@ Board.prototype = {
             $el: spot
         };
     },
+
+    /*
+     *  Return the spot based on the passed cordinates
+     */
     getSpot: function(x, y) {
         var index = (x * this.width) + y;
         var spot = this.spots[index-1];
         console.log('[Board] - getSpot: ' + index + ', ', spot);
         return spot;
     },
+
+    /*
+     *  Render board on the webpage
+     */
     render: function() {
         console.log('[Board] - render');
         var container = document.getElementById('game_board');
@@ -117,6 +162,10 @@ Board.prototype = {
             rowCount++;
         };
     },
+
+    /*
+     *  Place something (mob) on the board
+     */
     placeOnSpot: function(mob) {
         var index = mob.position;
         this.spots[index] = mob;
@@ -134,8 +183,13 @@ Mob.prototype = {
         this.position = position;
         this.el = el;
     },
-    moveTo: function(position) {
+    _moveTo: function(position) {
         console.log('moveTo: ', position);
+    },
+    movementAction: function() {
+        console.log("movementAction");
+        var currentPosition = this.position;
+        this.move(currentPosition);
     }
 };
 Mob.extend = function(extendClass) {
@@ -154,8 +208,19 @@ Zombie.prototype.render = function() {
     console.log('[Zombie] - render');
     this.el.className += ' zombie';
 };
-Zombie.prototype.move = function() {
+Zombie.prototype.move = function(currentPosition) {
     console.log('[Zombie] - move');
+    console.log("current position: ", currentPosition);
+
+    // Check if can move up
+    console.log('move up pos: ', (currentPosition.y -1)); 
+    
+    // down
+
+    // left
+
+    // right
+
     // Move to new/random position
     //this.moveTo(3,3);
 };
