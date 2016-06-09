@@ -24,7 +24,7 @@ var durations = {
 // 	output += MorseTable[c.toUpperCase()];
 // }
 
-var context = new webkitAudioContext();
+var context = new AudioContext();
 
 window.onload = function() {
     document.getElementById("translate").addEventListener("click", translateMorse);
@@ -63,13 +63,13 @@ function playTone(sequence, index) {
 
         if (sequence[index].tone) {
             var oscillator = context.createOscillator();
-            oscillator.type = 0;
+            oscillator.type = 'square';
             oscillator.frequency.value = 800;
             oscillator.connect(context.destination);
-            oscillator.noteOn && oscillator.noteOn(0);
+            oscillator.start();
 
             setTimeout(function() {
-                oscillator.noteOff(0);
+                oscillator.stop();
                 oscillator.disconnect();
                 setTimeout(function() {
                     playTone(sequence, index + 1);
